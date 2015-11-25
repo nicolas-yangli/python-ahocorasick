@@ -64,3 +64,13 @@ class TestAcSearch(unittest.TestCase):
         result =  list(acSearch.search(content))
         self.assertEqual(1, len(result))
         self.assertEqual(('abc', 0), result[0])
+        
+    def test_search_minibatch(self):
+        batchs = ('我能吞', '下玻璃', '而不伤', '身体')
+        keywords = ('吞下', '伤身体', '玻璃')
+        acSearch = AcSearch(keywords)
+        result = list(acSearch.search_minibatch(batchs))
+        self.assertEqual(3, len(result))
+        self.assertEqual('吞下', result[0])
+        self.assertEqual('玻璃', result[1])
+        self.assertEqual('伤身体', result[2])

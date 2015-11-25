@@ -75,3 +75,25 @@ class AcSearch(object):
             out_keyword = out[qIndex]
             if out_keyword is not None:
                 yield out_keyword, i+1-len(out_keyword)
+                
+    def search_minibatch(self, batchs):
+        trieArray = self._trieArray
+        fail = self._fail
+        out = self._out
+        qIndex = 0
+        q = trieArray[qIndex]
+        for batch in batchs:
+            for c in batch:
+                while c not in q.children:
+                    if qIndex == 0:
+                        break;
+                    qIndex = fail[qIndex]
+                    q = trieArray[qIndex]
+                try:
+                    qIndex = q.children[c]
+                except KeyError:
+                    assert qIndex == 0
+                q = trieArray[qIndex]
+                out_keyword = out[qIndex]
+                if out_keyword is not None:
+                    yield out_keyword
