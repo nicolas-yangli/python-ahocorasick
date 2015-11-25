@@ -47,3 +47,20 @@ class TestAcSearch(unittest.TestCase):
         self.assertEqual(2, len(result))
         self.assertEqual(('abac', 2), result[0])
         self.assertEqual(('bacb', 3), result[1])
+        
+    def test_keyword_prefix(self):
+        content = 'abcdef'
+        keywords = ('ab', 'abc')
+        acSearch = AcSearch(keywords)
+        result =  list(acSearch.search(content))
+        self.assertEqual(2, len(result))
+        self.assertEqual(('ab', 0), result[0])
+        self.assertEqual(('abc', 0), result[1])
+        
+    def test_keyword_suffix(self):
+        content = 'abcdef'
+        keywords = ('bc', 'abc')
+        acSearch = AcSearch(keywords)
+        result =  list(acSearch.search(content))
+        self.assertEqual(1, len(result))
+        self.assertEqual(('abc', 0), result[0])
